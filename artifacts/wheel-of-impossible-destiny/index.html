@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080b12">
+  <meta name="description" content="Spin into the beautifully ridiculous unknown.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23080b12' stroke='%23baff69' stroke-width='6'/%3E%3Cpath d='M50 10v40l30 20' fill='none' stroke='%2354f4e4' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E">
+  <title>Wheel of Impossible Destiny</title>
+  <style>
+    :root{color-scheme:dark;--void:#080b12;--panel:#101621;--line:rgba(180,208,232,.14);--text:#f0f5f5;--sub:#a1aebb;--mint:#baff69;--cyan:#54f4e4;--pink:#ff63a8;--amber:#ffc86b;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--sans:"Avenir Next",Avenir,"Trebuchet MS",sans-serif}
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--void);color:var(--text);font-family:var(--sans)}
+    body{min-height:100dvh;overflow-x:hidden;background-image:radial-gradient(ellipse at 50% 40%,rgba(31,46,65,.33),transparent 58%),linear-gradient(rgba(161,174,187,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(161,174,187,.025) 1px,transparent 1px);background-size:auto,40px 40px,40px 40px}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.11;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.17'/%3E%3C/svg%3E")}
+    button{font:inherit;color:inherit}
+    .shell{width:min(1220px,100%);min-height:100dvh;margin:auto;padding:20px 34px 22px;display:flex;flex-direction:column}
+    .topbar{height:48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:14px}
+    .credit{font:10px var(--mono);letter-spacing:.13em;color:#93a0ad;text-transform:uppercase}
+    .sound-toggle{display:inline-flex;align-items:center;gap:9px;background:transparent;border:1px solid var(--line);border-radius:99px;padding:8px 12px;color:#c7d1db;font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+    .sound-toggle:hover{border-color:rgba(186,255,105,.5);background:rgba(186,255,105,.06)}
+    .sound-toggle:active{transform:scale(.96)}
+    .sound-icon{width:13px;height:13px;display:block}
+    .sound-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 9px var(--mint)}
+    main{flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,390px);align-items:center;gap:clamp(26px,5vw,86px);padding:22px 0 15px}
+    .game-stage{display:flex;align-items:center;justify-content:center;position:relative;min-width:0}
+    .wheel-wrap{position:relative;width:min(68vh, min(56vw, 590px));aspect-ratio:1;min-width:300px;max-width:590px;display:grid;place-items:center;isolation:isolate}
+    .orbit{position:absolute;inset:-4%;border:1px solid rgba(84,244,228,.13);border-radius:50%;z-index:-1}
+    .orbit:before,.orbit:after{content:"";position:absolute;border:1px solid rgba(84,244,228,.08);border-radius:50%;inset:6%}
+    .orbit:after{inset:13%;border-style:dashed;animation:orbit 90s linear infinite}
+    @keyframes orbit{to{transform:rotate(360deg)}}
+    .wheel-halo{position:absolute;inset:7%;border-radius:50%;background:radial-gradient(circle,rgba(84,244,228,.11),rgba(84,244,228,.025) 55%,transparent 71%);filter:blur(9px);transition:opacity .3s;opacity:.8}
+    .wheel-wrap.spinning .wheel-halo{opacity:1}
+    .wheel-frame{position:absolute;inset:2%;border:1px solid rgba(180,208,232,.26);border-radius:50%;box-shadow:0 0 0 7px rgba(14,20,29,.75),0 0 0 8px rgba(180,208,232,.12),0 0 52px rgba(84,244,228,.1),inset 0 0 26px rgba(0,0,0,.6)}
+    canvas{display:block;width:88%;height:88%;border-radius:50%;filter:drop-shadow(0 15px 30px rgba(0,0,0,.48));}
+    .pointer{position:absolute;z-index:5;top:-1%;left:50%;transform:translateX(-50%);width:36px;height:53px;filter:drop-shadow(0 0 10px rgba(186,255,105,.55))}
+    .pointer svg{width:100%;height:100%;overflow:visible}
+    .center-cap{position:absolute;z-index:4;width:15%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#efffe0 0,#baff69 22%,#26391d 65%,#10171a 72%);border:3px solid #182125;box-shadow:0 0 0 1px rgba(186,255,105,.65),0 0 24px rgba(186,255,105,.36),inset 0 2px 5px rgba(255,255,255,.45);display:grid;place-items:center}
+    .center-cap:after{content:"";width:24%;height:24%;border-radius:50%;background:#17221c;box-shadow:inset 0 0 5px #000}
+    .wheel-index{position:absolute;bottom:-18px;font:9px var(--mono);letter-spacing:.21em;text-transform:uppercase;color:#71818e}
+    .side-panel{position:relative;max-width:390px;padding:18px 0}
+    .eyebrow{display:flex;align-items:center;gap:10px;font:10px var(--mono);color:var(--cyan);letter-spacing:.17em;text-transform:uppercase;margin:0 0 15px}
+    .eyebrow:before{content:"";width:23px;height:1px;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+    h1{font-size:clamp(41px,5.6vw,69px);line-height:.93;letter-spacing:-.075em;margin:0;font-weight:600;max-width:430px}
+    h1 span{display:block;color:var(--mint);font-weight:500}
+    .intro{font-size:14px;line-height:1.65;color:#9ba8b4;max-width:340px;margin:20px 0 27px}
+    .result-card{position:relative;min-height:126px;padding:18px 20px 18px 22px;border:1px solid rgba(180,208,232,.17);border-left:2px solid var(--cyan);background:linear-gradient(105deg,rgba(29,42,54,.72),rgba(15,21,30,.82));overflow:hidden;transition:border-color .3s,background .3s,transform .3s}
+    .result-card:after{content:"";position:absolute;right:-42px;top:-52px;width:140px;height:140px;border:1px solid rgba(84,244,228,.14);border-radius:50%;box-shadow:0 0 0 12px rgba(84,244,228,.025),0 0 0 27px rgba(84,244,228,.02)}
+    .result-card.revealed{border-left-color:var(--mint);border-top-color:rgba(186,255,105,.35);background:linear-gradient(105deg,rgba(50,64,37,.58),rgba(15,21,30,.9));animation:reveal .5s cubic-bezier(.2,.8,.2,1)}
+    @keyframes reveal{0%{transform:translateY(7px);opacity:.3}100%{transform:translateY(0);opacity:1}}
+    .result-label{font:9px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#8293a1;margin-bottom:9px}
+    .result-title{font-size:22px;line-height:1.12;font-weight:600;letter-spacing:-.04em;max-width:300px}
+    .result-note{font:10px var(--mono);color:#90a0ac;margin-top:9px;letter-spacing:.04em}
+    .result-card.secret{border-left-color:var(--pink);background:linear-gradient(105deg,rgba(76,31,63,.55),rgba(15,21,30,.9))}
+    .result-card.secret .result-label,.result-card.secret .result-note{color:#ff98c4}
+    .actions{display:flex;align-items:center;gap:13px;margin-top:20px}
+    .spin-button{position:relative;min-width:185px;min-height:56px;padding:0 23px;border:0;background:var(--mint);color:#11170d;font-weight:700;font-size:13px;letter-spacing:.035em;cursor:pointer;clip-path:polygon(0 0,calc(100% - 13px) 0,100% 13px,100% 100%,13px 100%,0 calc(100% - 13px));transition:transform .18s cubic-bezier(.2,.8,.2,1),filter .18s,opacity .2s}
+    .spin-button:hover{filter:brightness(1.08);transform:translateY(-2px)}
+    .spin-button:active{transform:scale(.965)}
+    .spin-button:disabled{opacity:.55;cursor:wait;transform:none;filter:none}
+    .button-arrow{font-size:16px;margin-left:14px}
+    .spin-hint{font:9px var(--mono);color:#758592;line-height:1.55;max-width:105px}
+    .stats{display:flex;gap:0;margin-top:26px;padding-top:16px;border-top:1px solid var(--line)}
+    .stat{padding-right:23px;margin-right:23px;border-right:1px solid var(--line)}
+    .stat:last-child{border:0;margin:0;padding:0}
+    .stat-value{font:15px var(--mono);color:#e7eff1}
+    .stat-name{font:8px var(--mono);color:#71808c;text-transform:uppercase;letter-spacing:.12em;margin-top:5px}
+    .bottomline{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:13px;font:9px var(--mono);color:#64727f;letter-spacing:.09em;text-transform:uppercase}
+    .bottomline strong{font-weight:400;color:#98a5b1}
+    .live-mark{display:inline-block;width:6px;height:6px;background:var(--pink);border-radius:50%;margin-right:8px;box-shadow:0 0 8px rgba(255,99,168,.8);animation:blink 1.7s ease-in-out infinite}
+    @keyframes blink{50%{opacity:.35}}
+    .particles{position:absolute;inset:0;overflow:visible;pointer-events:none;z-index:8}
+    .particle{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px currentColor;animation:burst 850ms cubic-bezier(.15,.8,.3,1) forwards}
+    @keyframes burst{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+    .shake{animation:shake .36s linear}
+    @keyframes shake{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}40%{transform:translate(5px,-3px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(3px,2px)}}
+    :focus-visible{outline:2px solid var(--mint);outline-offset:4px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:800px){.shell{padding:15px 22px 18px}main{grid-template-columns:minmax(0,1fr) minmax(240px,310px);gap:24px}.wheel-wrap{width:min(56vw,450px);min-width:260px}h1{font-size:clamp(39px,6vw,58px)}.intro{font-size:13px}}
+    @media(max-width:640px){.shell{padding:13px 18px 15px;min-height:100dvh}.topbar{height:41px;padding-bottom:10px}.credit{font-size:9px;letter-spacing:.07em}.sound-toggle{padding:7px 10px;font-size:9px}main{display:flex;flex-direction:column;justify-content:flex-start;gap:16px;padding:18px 0 20px}.game-stage{width:100%;order:0}.wheel-wrap{width:min(82vw,410px);min-width:0}.wheel-index{bottom:-13px;font-size:8px}.side-panel{width:100%;max-width:450px;padding:11px 0 0;order:1}.eyebrow{margin-bottom:9px;font-size:9px}h1{font-size:clamp(38px,11vw,55px);max-width:none}.intro{margin:10px 0 15px;font-size:12px;line-height:1.5}.result-card{min-height:108px;padding:14px 16px 14px 18px}.result-title{font-size:20px}.actions{margin-top:14px}.spin-button{min-height:51px;flex:1;min-width:0}.spin-hint{max-width:110px}.stats{margin-top:17px;padding-top:12px}.stat{padding-right:18px;margin-right:18px}.bottomline{font-size:8px}.bottomline span:last-child{letter-spacing:.04em}}
+    @media(max-width:375px){.shell{padding-left:14px;padding-right:14px}.wheel-wrap{width:min(79vw,340px)}.intro{margin-bottom:12px}.stats{margin-top:14px}.spin-hint{font-size:8px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <div class="shell" id="app-shell">
+    <header class="topbar">
+      <div class="credit">Created by Student #150096725066</div>
+      <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false" aria-label="Turn sound on" data-testid="button-sound">
+        <span class="sound-dot" aria-hidden="true"></span><span id="sound-label">Sound off</span>
+      </button>
+    </header>
+    <main>
+      <section class="game-stage" aria-label="Destiny wheel">
+        <div class="wheel-wrap" id="wheel-wrap">
+          <div class="orbit" aria-hidden="true"></div><div class="wheel-halo" aria-hidden="true"></div>
+          <div class="wheel-frame" aria-hidden="true"></div>
+          <div class="pointer" aria-hidden="true"><svg viewBox="0 0 36 54"><path d="M18 52 2 5Q1 1 5 2l13 5 13-5q4-1 3 3L18 52Z" fill="#baff69" stroke="#101813" stroke-width="2"/><circle cx="18" cy="10" r="3" fill="#f2ffe4"/></svg></div>
+          <canvas id="wheel" role="img" aria-label="Colorful wheel with 12 possible ridiculous destinies" data-testid="wheel-canvas"></canvas>
+          <div class="center-cap" aria-hidden="true"></div>
+          <div class="particles" id="particles" aria-hidden="true"></div>
+          <div class="wheel-index">12 outcomes · one questionable future</div>
+        </div>
+      </section>
+      <section class="side-panel" aria-labelledby="game-title">
+        <p class="eyebrow">A highly unscientific oracle</p>
+        <h1 id="game-title">Wheel of <span>Impossible</span> Destiny</h1>
+        <p class="intro">One spin. One wildly specific future. The universe has a strange sense of humor.</p>
+        <div class="result-card" id="result-card" aria-live="polite" aria-atomic="true" data-testid="result-card">
+          <div class="result-label" id="result-label">Your fate is buffering</div>
+          <div class="result-title" id="result-title">The wheel is waiting.</div>
+          <div class="result-note" id="result-note">Tap spin to consult the questionable cosmos.</div>
+        </div>
+        <div class="actions">
+          <button class="spin-button" id="spin-button" type="button" aria-label="Spin the wheel of destiny" data-testid="button-spin">SPIN INTO FATE <span class="button-arrow" aria-hidden="true">↗</span></button>
+          <div class="spin-hint">No refunds.<br>Probably no prophecy.</div>
+        </div>
+        <div class="stats" aria-label="Play statistics">
+          <div class="stat"><div class="stat-value" id="spin-count" data-testid="text-spin-count">00</div><div class="stat-name">Spins taken</div></div>
+          <div class="stat"><div class="stat-value" id="secret-count" data-testid="text-secret-count">0</div><div class="stat-name">Secrets found</div></div>
+          <div class="stat"><div class="stat-value">∞</div><div class="stat-name">Regrets pending</div></div>
+        </div>
+      </section>
+    </main>
+    <footer class="bottomline"><span><i class="live-mark" aria-hidden="true"></i><strong>Cosmic nonsense</strong> · currently operational</span><span>Odds may be emotionally inaccurate</span></footer>
+  </div>
+  <script>
+  (() => {
+    const canvas=document.getElementById('wheel'),ctx=canvas.getContext('2d');
+    const wrap=document.getElementById('wheel-wrap'),button=document.getElementById('spin-button');
+    const card=document.getElementById('result-card'),title=document.getElementById('result-title'),label=document.getElementById('result-label'),note=document.getElementById('result-note');
+    const countNode=document.getElementById('spin-count'),secretNode=document.getElementById('secret-count'),soundButton=document.getElementById('sound-toggle'),soundLabel=document.getElementById('sound-label');
+    const outcomes=[
+      {title:"You become mildly famous for a typo.",kind:"ordinary",note:"Your autocorrect era begins now."},
+      {title:"A pigeon respects your personal space.",kind:"ordinary",note:"A rare and powerful alliance."},
+      {title:"You find a very nice rock.",kind:"ordinary",note:"It has excellent rock energy."},
+      {title:"Your next snack is inexplicably perfect.",kind:"ordinary",note:"The crunch-to-joy ratio is historic."},
+      {title:"A door opens on the first try.",kind:"ordinary",note:"Some doors simply understand you."},
+      {title:"You remember why you entered the room.",kind:"ordinary",note:"The mind palace has one working lamp."},
+      {title:"A stranger laughs at your quiet joke.",kind:"ordinary",note:"Your comedy career is now technically real."},
+      {title:"Your laundry emerges mostly unwrinkled.",kind:"ordinary",note:"The fabric realm has shown mercy."},
+      {title:"You are promoted to Assistant Cloud Observer.",kind:"ordinary",note:"Your first cloud review is due Tuesday."},
+      {title:"A tiny breeze dramatically improves your hair.",kind:"ordinary",note:"The wind has excellent taste."},
+      {title:"The moon sends you a calendar invite.",kind:"secret",note:"Subject: we need to talk about tides."},
+      {title:"You unlock the ceremonial soup spoon.",kind:"secret",note:"The ancient broth council welcomes you."}
+    ];
+    const colors=["#f6c56d","#f28a76","#da718e","#bb79c8","#8d8be0","#71a7df","#60c5cb","#72d4a4","#b5d96b","#ef9f5e","#fa69b2","#61f0dc"];
+    let rotation=0,spinning=false,spins=0,secrets=0,audio=null,soundOn=false,lastTick=-1;
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+    function resize(){
+      const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+      canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);drawWheel();
+    }
+    function drawWheel(){
+      const w=canvas.clientWidth,h=canvas.clientHeight,cx=w/2,cy=h/2,r=Math.min(w,h)/2-5,step=Math.PI*2/outcomes.length;
+      ctx.clearRect(0,0,w,h);
+      ctx.save();ctx.translate(cx,cy);ctx.rotate(rotation);
+      for(let i=0;i<outcomes.length;i++){
+        const start=-Math.PI/2+i*step,end=start+step;
+        ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,r,start,end);ctx.closePath();
+        ctx.fillStyle=colors[i];ctx.fill();
+        ctx.strokeStyle='rgba(8,11,18,.72)';ctx.lineWidth=2;ctx.stroke();
+        ctx.save();ctx.rotate(start+step/2);ctx.translate(r*.68,0);ctx.rotate(Math.PI/2);
+        ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='rgba(8,14,20,.84)';
+        ctx.font=`500 ${Math.max(8,Math.min(11,r*.055))}px monospace`;
+        ctx.fillText(String(i+1).padStart(2,'0'),0,0);ctx.restore();
+      }
+      ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.strokeStyle='rgba(239,255,247,.65)';ctx.lineWidth=2;ctx.stroke();
+      ctx.beginPath();ctx.arc(0,0,r*.12,0,Math.PI*2);ctx.strokeStyle='rgba(239,255,247,.44)';ctx.lineWidth=1;ctx.stroke();
+      ctx.restore();
+    }
+    function ensureAudio(){
+      if(!audio){const AudioContext=window.AudioContext||window.webkitAudioContext;if(AudioContext)audio=new AudioContext()}
+      if(audio&&audio.state==='suspended')audio.resume();
+    }
+    function tone(freq,duration,type='sine',volume=.035,delay=0){
+      if(!soundOn||!audio)return;
+      const osc=audio.createOscillator(),gain=audio.createGain(),now=audio.currentTime+delay;
+      osc.type=type;osc.frequency.setValueAtTime(freq,now);gain.gain.setValueAtTime(.0001,now);
+      gain.gain.exponentialRampToValueAtTime(volume,now+.012);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
+      osc.connect(gain);gain.connect(audio.destination);osc.start(now);osc.stop(now+duration+.02);
+    }
+    function tick(){tone(460+Math.random()*150,.055,'triangle',.018)}
+    function finale(secret){
+      tone(secret?880:640,.18,'sine',.045);tone(secret?1175:820,.22,'sine',.035,.09);
+      if(secret)tone(1568,.42,'triangle',.035,.2);
+    }
+    function particleBurst(secret){
+      const box=document.getElementById('particles'),rect=wrap.getBoundingClientRect();
+      const cx=rect.width/2,cy=rect.height/2,amount=secret?48:30;
+      for(let i=0;i<amount;i++){
+        const p=document.createElement('i'),angle=Math.random()*Math.PI*2,distance=70+Math.random()*Math.min(190,rect.width*.3);
+        p.className='particle';p.style.left=`${cx}px`;p.style.top=`${cy}px`;
+        p.style.color=secret?(i%2?'#ff63a8':'#ffc86b'):(i%2?'#baff69':'#54f4e4');
+        p.style.background=p.style.color;p.style.width=p.style.height=`${3+Math.random()*5}px`;
+        p.style.setProperty('--dx',`${Math.cos(angle)*distance}px`);p.style.setProperty('--dy',`${Math.sin(angle)*distance}px`);
+        box.appendChild(p);setTimeout(()=>p.remove(),900);
+      }
+    }
+    function showResult(index){
+      const result=outcomes[index],secret=result.kind==='secret';
+      title.textContent=result.title;label.textContent=secret?'A SECRET DESTINY FOUND':'THE COSMOS HAS DECIDED';
+      note.textContent=result.note;card.classList.remove('revealed','secret');void card.offsetWidth;card.classList.add('revealed');
+      if(secret){card.classList.add('secret');secrets++;secretNode.textContent=String(secrets)}
+      if(!reduced.matches){particleBurst(secret);if(secret||index===3||index===8){document.getElementById('app-shell').classList.remove('shake');void document.getElementById('app-shell').offsetWidth;document.getElementById('app-shell').classList.add('shake')}}
+      finale(secret);
+    }
+    function spin(){
+      if(spinning)return;
+      ensureAudio();
+      spinning=true;button.disabled=true;wrap.classList.add('spinning');card.classList.remove('revealed','secret');
+      label.textContent='THE COSMOS IS CONSIDERING';title.textContent='Consulting the highly questionable…';note.textContent='Please remain emotionally available.';
+      spins++;countNode.textContent=String(spins).padStart(2,'0');
+      const secretRoll=Math.random()<.045;
+      let index=secretRoll?(Math.random()<.5?10:11):Math.floor(Math.random()*10);
+      const step=Math.PI*2/outcomes.length;
+      // The pointer is at -90deg; wheel sectors are centered at the same angle at rotation 0.
+      const target=((Math.PI*2-(index+.5)*step)%(Math.PI*2));
+      const current=((rotation%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+      const delta=(target-current+Math.PI*2)%(Math.PI*2);
+      const start=rotation,extra=(5+Math.floor(Math.random()*3))*Math.PI*2+delta,duration=reduced.matches?1100:4300+Math.random()*900,startTime=performance.now();
+      lastTick=-1;
+      function frame(now){
+        const raw=Math.min(1,(now-startTime)/duration),progress=1-Math.pow(1-raw,4.2);
+        rotation=start+extra*progress;drawWheel();
+        const segment=Math.floor((((rotation%(Math.PI*2))+Math.PI*2)%(Math.PI*2))/(Math.PI*2)*outcomes.length);
+        if(segment!==lastTick){lastTick=segment;tick()}
+        if(raw<1){requestAnimationFrame(frame)}else{
+          rotation=target+Math.round((start+extra-target)/(Math.PI*2))*Math.PI*2;drawWheel();
+          spinning=false;button.disabled=false;wrap.classList.remove('spinning');showResult(index);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+    soundButton.addEventListener('click',()=>{
+      soundOn=!soundOn;
+      if(soundOn)ensureAudio();
+      soundButton.setAttribute('aria-pressed',String(soundOn));
+      soundButton.setAttribute('aria-label',soundOn?'Turn sound off':'Turn sound on');
+      soundLabel.textContent=soundOn?'Sound on':'Sound off';
+      soundButton.querySelector('.sound-dot').style.background=soundOn?'var(--pink)':'var(--mint)';
+    });
+    button.addEventListener('click',spin);
+    window.addEventListener('resize',resize);
+    resize();
+  })();
+  </script>
+</body>
+</html>

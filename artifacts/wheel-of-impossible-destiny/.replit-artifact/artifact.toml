@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Wheel of Impossible Destiny"
+description = "A playful physics arcade where a neon spinning wheel delivers absurd secret outcomes, with particle bursts, screen shake, and sound effects."
+version = "1.0.0"
+id = "artifacts/wheel-of-impossible-destiny"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20107
+
+[services.development]
+run = "pnpm --filter @workspace/wheel-of-impossible-destiny run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/wheel-of-impossible-destiny", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/wheel-of-impossible-destiny/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20107"
+BASE_PATH = "/"

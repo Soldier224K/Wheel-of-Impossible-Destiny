@@ -3,11 +3,18 @@
 > **"Spin into the beautifully ridiculous unknown."**  
 > *A highly unscientific cosmic oracle delivering wildly specific, questionably prophetic futures.*
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-baff69?style=for-the-badge&logo=replit&logoColor=080b12)](https://wheel-of-impossible-destiny--stocklineowner.replit.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-54f4e4.svg?style=for-the-badge)](LICENSE)
+
+🎮 **Play Live:** [https://wheel-of-impossible-destiny--stocklineowner.replit.app](https://wheel-of-impossible-destiny--stocklineowner.replit.app)
+
 ---
 
 ## 🌟 Overview
 
 **Wheel of Impossible Destiny** is an interactive, dark-aesthetic fortune wheel web experience. Driven by high-precision physics calculations on an HTML5 canvas and powered by synthetic Web Audio sound design, it gives players one spin at a time to reveal their absurdly specific, emotionally questionable cosmic fate.
+
+Try the live deployed version at **[wheel-of-impossible-destiny--stocklineowner.replit.app](https://wheel-of-impossible-destiny--stocklineowner.replit.app)** or run it locally in your development environment.
 
 Built inside a modern full-stack TypeScript monorepo, the repository combines the interactive frontend, an Express 5 REST API server, Drizzle ORM database management, and OpenAPI client generation.
 
